@@ -4,6 +4,7 @@ require "mongo"
 $LOAD_PATH << "./lib"
 require "mote/document"
 require "mote/cursor"
+require "mote/extensions"
 
 Mote.autoload(:Callbacks, "mote/callbacks")
 
