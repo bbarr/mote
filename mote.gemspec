@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "mote/version"
 
 Gem::Specification.new do |s|
-  s.name        = "Mote"
+  s.name        = "mote"
   s.version     = Mote::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Damian Galarza"]
@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
   s.homepage    = ""
   s.summary     = %q{MongoDB library}
   s.description = %q{TLightweight MongoDB Ruby driver abstraction}
-
-  s.rubyforge_project = "Mote"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
