@@ -84,6 +84,9 @@ module Mote
     # Makes an insert call to the database for the instance of the document
     def insert
       return false unless is_new?
+    
+      self.class.run_callbacks(:before_save)
+      
       _id = self.class.collection.insert(@doc)
       self.is_new = false
 

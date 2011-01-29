@@ -5,6 +5,8 @@ $LOAD_PATH << "./lib"
 require "mote/document"
 require "mote/cursor"
 
+Mote.autoload(:Callbacks, "mote/callbacks")
+
 module Mote
   class << self
     def db
