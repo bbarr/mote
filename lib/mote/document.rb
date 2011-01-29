@@ -44,8 +44,19 @@ module Mote
         self.new(doc, false)
       end
 
+      # Find all of the documents in a collection
       def all
         find
+      end
+
+      # Quickly create a document, inserting it to the collection immediately
+      # 
+      # @param [Hash] doc_hash Hash which represents the document to be inserted
+      def create(doc_hash)
+        doc = self.new(doc_hash, true)
+        doc.insert
+        
+        return doc
       end
 
     end
@@ -81,13 +92,22 @@ module Mote
       @doc.to_json
     end
 
+    # Compare Mote::Documents based off the _id of the document
+    #
+    # @param [Document] other The other document to compare with
+    def ==(other)
+      return false unless other.is_a?(self.class)
+      @doc["_id"] == other["_id"]
+    end
+
     # Makes an insert call to the database for the instance of the document
     def insert
       return false unless is_new?
     
-      self.class.run_callbacks(:before_save)
+      self.run_callbacks(:before_save)
       
       _id = self.class.collection.insert(@doc)
+      self["_id"] = _id
       self.is_new = false
 
       return _id
@@ -101,6 +121,15 @@ module Mote
     def update(update_doc=@doc, opts)
       return false if is_new?
       self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
+    end
+
+    # Simple means to access a document's attribute through a method call
+    def method_missing(sym, *args, &block)
+      if @doc.include? sym
+        return @doc[sym.to_s]
+      else
+        super
+      end
     end
 
   end

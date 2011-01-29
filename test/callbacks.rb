@@ -8,5 +8,7 @@ class CallbackTest < Test::Unit::TestCase
   end
 
   def test_callback_method
+    book = Book.create(:name => "War and Peace")
+    assert_send [book, :some_func]
   end
 end

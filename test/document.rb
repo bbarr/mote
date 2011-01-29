@@ -32,4 +32,16 @@ class DocumentTest < Test::Unit::TestCase
     assert_equal(book, Book.find_one(book["_id"]))
   end
 
+  def test_attribute_by_method
+    book = Book.new(:name => "War and Peace")
+    book.insert
+
+    assert_equal(book["name"], book.name)
+  end
+  
+  def test_create_method
+    book = Book.create(:name => "War and Peace")
+    assert_instance_of(Book, book)
+  end
+
 end
