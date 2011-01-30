@@ -5,8 +5,7 @@ Mote.db = Mongo::Connection.new.db("mote_test")
 class Book < Mote::Document
   include Mote::Callbacks
 
-  def some_func
+  def my_before_save
     p "before save"
   end
 end
-

@@ -1,11 +1,11 @@
 PATH
   remote: .
   specs:
-    mote (0.0.1)
+    mote (0.0.2)
       activesupport (= 3.0.0)
-      bson_ext
+      bson_ext (>= 1.2)
       i18n
-      mongo
+      mongo (>= 1.2)
 
 GEM
   remote: http://rubygems.org/
@@ -13,16 +13,22 @@ GEM
     activesupport (3.0.0)
     bson (1.2.0)
     bson_ext (1.2.0)
+    diff-lcs (1.1.2)
     i18n (0.5.0)
     mongo (1.2.0)
       bson (>= 1.2.0)
+    rspec (2.4.0)
+      rspec-core (~> 2.4.0)
+      rspec-expectations (~> 2.4.0)
+      rspec-mocks (~> 2.4.0)
+    rspec-core (2.4.0)
+    rspec-expectations (2.4.0)
+      diff-lcs (~> 1.1.2)
+    rspec-mocks (2.4.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (= 3.0.0)
-  bson_ext
-  i18n
-  mongo
   mote!
+  rspec

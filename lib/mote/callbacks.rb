@@ -4,12 +4,14 @@ module Mote
   # The workflow was borrowed from MongoMapper
   # @see https://github.com/jnunemaker/mongomapper/blob/master/lib/mongo_mapper/plugins/callbacks.rb
   module Callbacks
+    extend ActiveSupport::Concern
 
-    def self.included(base)
+    included do
+
       callbacks = [:before_save]
 
       callbacks.each do |callback|
-        base.class_eval <<-"end_eval"
+        class_eval <<-"end_eval"
           def self.#{callback}(method, &block)
             callbacks = CallbackChain.build(:#{callback}, method, &block)
             @#{callback}_callbacks ||= CallbackChain.new
@@ -70,10 +72,14 @@ module Mote
     # Custom callback class to define callbacks for our model
     class Callback
 
-      def initialize(kind, method, opts={})
+      # Callback constructor
+      #
+      # @param [Symbol] kind The kind of callback (before_save, before_create, etc)
+      # @param [Symbol, Proc, Method, Object] method The callback method itself
+      def initialize(kind, method, options)
         @kind = kind
         @method = method
-        @options = opts
+        @options = options
       end
 
       # Run the callback
@@ -81,20 +87,24 @@ module Mote
         evaluate_method(@method, *args, &block)
       end
 
-      # Evaluates a callback method based on the way it was passed in, be it a
-      # Symbol, String, Proc or Method
+      # Evaluates a callback method based on the way it was passed in.
+      # 
+      # A callback can be passed in as follows
+      # * A symbol referring to a model instance method
+      # * An inline method via a proc
+      # * A callback object which has methods named after the callback called
+      #   @see ActiveRecord::Callbacks
+      #   @see http://api.rubyonrails.org/classes/ActiveRecord/Callbacks.html
       def evaluate_method(method, *args, &block)
         case method
         when Symbol
           object = args.shift
           object.send(method, *args, &block)
-        when String
-          eval(method, args.first.instance_eval { binding })
         when Proc, Method
           method.call(*args, &block)
         else
-          if method.respond_to? kind
-            method.send(kind, *args, &block)
+          if method.respond_to? @kind
+            method.send(@kind, *args, &block)
           end
         end
       end

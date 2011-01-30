@@ -7,6 +7,7 @@ require "mote/cursor"
 require "mote/extensions"
 
 Mote.autoload(:Callbacks, "mote/callbacks")
+ActiveSupport.autoload(:Concern, "active_support/concern")
 
 module Mote
   class << self
