@@ -1,4 +1,5 @@
 require 'active_support/inflector'
+require 'active_support/json'
 
 module Mote
 
@@ -64,7 +65,7 @@ module Mote
     attr_accessor :is_new
 
     def initialize(doc_hash=Hash.new, is_new=true)
-      self.doc = doc_hash
+      self.doc = doc_hash.stringify_keys
       self.is_new = is_new
     end
 
@@ -77,11 +78,11 @@ module Mote
     end
 
     def [](k)
-      @doc[k.to_s]
+      doc[k.to_s]
     end
 
     def []=(k,v)
-      @doc[k.to_s] = v
+      doc[k.to_s] = v
     end
 
     def is_new?
@@ -89,7 +90,7 @@ module Mote
     end
 
     def to_json(*a)
-      @doc.to_json
+      doc.to_json
     end
 
     # Compare Mote::Documents based off the _id of the document
@@ -121,15 +122,6 @@ module Mote
     def update(update_doc=@doc, opts)
       return false if is_new?
       self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
-    end
-
-    # Simple means to access a document's attribute through a method call
-    def method_missing(sym, *args, &block)
-      if @doc.include? sym
-        return @doc[sym.to_s]
-      else
-        super
-      end
     end
 
   end
