@@ -1,3 +1,5 @@
+require "active_support/concern"
+
 module Mote
 
   # Very stripped down callback set up for models providing a way to run before_save, etc
