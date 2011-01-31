@@ -5,6 +5,8 @@ describe Mote::Keys do
   class Author < Mote::Document
     include Mote::Keys
 
+    attr_accessor :password
+
     key :name
   end
 
@@ -26,6 +28,12 @@ describe Mote::Keys do
     @author.name = "Galarza"
     @author.name.should == "Galarza"
     @author["name"].should == "Galarza"
+  end
+
+  it "should let you pass instance variables not related to the document" do
+    @author = Author.new(:name => "Damian", :password => "pass")
+    @author.doc.include?(:password).should be false
+    @author.password.should == "pass"
   end
 
 end

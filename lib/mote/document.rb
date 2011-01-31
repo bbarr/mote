@@ -65,7 +65,13 @@ module Mote
     attr_accessor :is_new
 
     def initialize(doc_hash=Hash.new, is_new=true)
-      self.doc = doc_hash.stringify_keys
+
+      if self.class.include?(Mote::Keys)
+        self.doc = process_keys doc_hash
+      else
+        self.doc = doc_hash.stringify_keys
+      end
+
       self.is_new = is_new
     end
 
