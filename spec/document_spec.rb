@@ -25,7 +25,7 @@ describe Mote::Document do
 
   it "should find one by id" do
     @book.insert
-    Book.find_one(@book._id).should == @book
+    Book.find_one(@book["_id"]).should == @book
   end
 
   specify "attributes by method call" do
@@ -37,6 +37,10 @@ describe Mote::Document do
     @book = Book.create(:name => "War and Peace")
     @book.should be_a(Book)
     @book.is_new.should be(false)
+  end
+
+  it "should access a document hash's attribute through the object" do
+    @book[:name].should == "War and Peace"
   end
 
 end
