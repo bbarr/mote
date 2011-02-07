@@ -56,13 +56,13 @@ module Mote
       def create(doc_hash)
         doc = self.new(doc_hash, true)
         doc.insert
-        
+
         return doc
       end
 
     end
 
-    attr_accessor :is_new
+    attr_accessor :is_new 
 
     def initialize(doc_hash=Hash.new, is_new=true)
       if self.class.include?(Mote::Keys)
@@ -94,6 +94,10 @@ module Mote
       self.is_new == true
     end
 
+    def as_json(*a)
+      @doc.as_json
+    end
+
     def to_json(*a)
       @doc.to_json
     end
@@ -110,10 +114,9 @@ module Mote
     def insert
       return false unless is_new?
     
-      self.run_callbacks(:before_save)
+      self.run_callbacks(:before_save) if self.class.include?(Mote::Callbacks)
       
       _id = self.class.collection.insert(@doc)
-      self["_id"] = _id
       self.is_new = false
 
       return _id
