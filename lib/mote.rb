@@ -8,6 +8,7 @@ require "mote/extensions"
 
 Mote.autoload :Callbacks, "mote/callbacks"
 Mote.autoload :Keys, "mote/keys"
+Mote.autoload :PkFactory, "mote/pk_factory"
 
 module Mote
   class << self
