@@ -43,11 +43,10 @@ module Mote
     # 
     # @param [Hash] hash Hash to process
     def process_keys(hash)
-
       doc_hash = Hash.new.tap do |doc|
         hash.each do |k, v|
           if self.class.keys.include? k
-            doc[k] = hash.delete(k)
+            doc[k.to_s] = hash.delete(k)
           end
         end
       end
