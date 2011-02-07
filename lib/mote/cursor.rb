@@ -13,7 +13,7 @@ module Mote
     # each document found in the cursor
     def each
       @mongo_cursor.each do |doc|
-        yield(@obj_class.new(doc))
+        yield(@obj_class.new(doc, false))
       end
     end
 
