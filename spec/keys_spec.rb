@@ -41,6 +41,11 @@ describe Mote::Keys do
     @author.name.should == "Damian"
     @author.doc["name"].should == "Damian"
   end
-
+  
+  it "should have a valid document hash after finding" do
+    @author = Author.create(:name => "Damian", :password => "pass")
+    @a = Author.find_one(:name => "Damian")
+    @a["name"].should == "Damian"
+  end
 
 end

@@ -45,7 +45,7 @@ module Mote
     def process_keys(hash)
       doc_hash = Hash.new.tap do |doc|
         hash.each do |k, v|
-          if self.class.keys.include? k
+          if self.class.keys.include? k.to_sym
             doc[k.to_s] = hash.delete(k)
           end
         end
