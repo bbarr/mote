@@ -65,7 +65,6 @@ module Mote
     attr_accessor :is_new
 
     def initialize(doc_hash=Hash.new, is_new=true)
-
       if self.class.include?(Mote::Keys)
         self.doc = process_keys doc_hash
       else
@@ -84,11 +83,11 @@ module Mote
     end
 
     def [](k)
-      doc[k.to_s]
+      @doc[k.to_s]
     end
 
     def []=(k,v)
-      doc[k.to_s] = v
+      @doc[k.to_s] = v
     end
 
     def is_new?
@@ -96,7 +95,7 @@ module Mote
     end
 
     def to_json(*a)
-      doc.to_json
+      @doc.to_json
     end
 
     # Compare Mote::Documents based off the _id of the document
