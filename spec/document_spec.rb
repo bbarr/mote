@@ -28,11 +28,6 @@ describe Mote::Document do
     Book.find_one(@book["_id"]).should == @book
   end
 
-  specify "attributes by method call" do
-    @book.insert
-    @book.name.should == @book["name"]
-  end
-
   specify "create method" do
     @book = Book.create(:name => "War and Peace")
     @book.should be_a(Book)
