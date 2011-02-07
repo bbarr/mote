@@ -36,4 +36,11 @@ describe Mote::Keys do
     @author.password.should == "pass"
   end
 
+  it "should have a hash which represents the document still" do
+    @author = Author.create(:name => "Damian", :password => "pass")
+    @author.name.should == "Damian"
+    @author.doc["name"].should == "Damian"
+  end
+
+
 end
