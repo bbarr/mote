@@ -95,8 +95,8 @@ module Mote
       serialize(options)
     end
 
-    def to_json(*a)
-      @doc.to_json
+    def to_json(options={})
+      as_json(options)
     end
 
     # Compare Mote::Documents based off the _id of the document
@@ -147,8 +147,10 @@ module Mote
     #
     # Allows the user to specify methods on the model to call when
     # serializing
-    def serialize(options={})
+    def serialize(options=nil)
+      options ||= {}
       keys = @doc.keys
+
       method_names = Array.wrap(options[:methods]).map { |n| n if respond_to?(n) }.compact
       Hash[(keys + method_names).map { |n| [n.to_s, send(n)] }]
     end
