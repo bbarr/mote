@@ -30,6 +30,7 @@ describe Mote::Keys do
     end
 
     it "should let you specify the attribute name through a method" do
+      @author.should_not_receive :method_missing
       @author.name = "Galarza"
       @author.name.should == "Galarza"
       @author["name"].should == "Galarza"
