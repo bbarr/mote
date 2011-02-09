@@ -6,6 +6,11 @@ require "mote/document"
 require "mote/cursor"
 require "mote/extensions"
 
+# Load in some particular active_support modules
+require "active_support/core_ext/array/wrap"
+require 'active_support/inflector'
+require 'active_support/json'
+
 Mote.autoload :Callbacks, "mote/callbacks"
 Mote.autoload :Keys, "mote/keys"
 Mote.autoload :PkFactory, "mote/pk_factory"
