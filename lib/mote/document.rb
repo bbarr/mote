@@ -66,7 +66,7 @@ module Mote
 
     def initialize(doc_hash=Hash.new, is_new=true)
       if self.class.include?(Mote::Keys)
-        self.doc = process_keys doc_hash
+        self.doc = process_keys doc_hash.stringify_keys
       else
         self.doc = doc_hash.stringify_keys
       end
