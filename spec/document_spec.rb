@@ -37,5 +37,28 @@ describe Mote::Document do
   it "should access a document hash's attribute through the object" do
     @book[:name].should == "War and Peace"
   end
+  
+  it "should be able to access document properties through method missing" do
+    @book.name.should == "War and Peace"
+  end
 
+  describe "JSON custom methods" do
+    it "should call my_special_method when rendering json" do
+      @book.should_receive :my_special_method
+      @book.as_json(:methods => [:my_special_method])
+    end
+
+    it "should provide a serialized hash for the Mote::Document" do
+      json_hash = @book.as_json
+      json_hash.should be_a Hash
+      json_hash.should include "name"
+    end
+
+    it "should provide a serialized hash with a key and value for the my_special_method" do
+      json_hash = @book.as_json(:methods => [:my_special_method])
+      json_hash.should include "my_special_method"
+      json_hash["my_special_method"].should == "foo:bar"
+    end
+  end
+  
 end

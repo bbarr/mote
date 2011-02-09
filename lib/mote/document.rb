@@ -1,6 +1,3 @@
-require 'active_support/inflector'
-require 'active_support/json'
-
 module Mote
 
   # Basic document class for representing documents in a
@@ -94,8 +91,8 @@ module Mote
       self.is_new == true
     end
 
-    def as_json(*a)
-      @doc.as_json
+    def as_json(options={})
+      serialize(options)
     end
 
     def to_json(*a)
@@ -132,6 +129,29 @@ module Mote
       self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
     end
 
+    # Provide access to document keys through method missing
+    def method_missing(method_name, *args)
+      if @doc.include? method_name.to_s
+        @doc[method_name.to_s]
+      else
+        super
+      end
+    end
+
+    private
+
+    # Serialize a Mote::Document
+    #
+    # The basis for this method was borrowed from ActiveModel's Serialization#serializable_hash
+    # @see ActiveSupport::Serialization#serialiazable_hash
+    #
+    # Allows the user to specify methods on the model to call when
+    # serializing
+    def serialize(options={})
+      keys = @doc.keys
+      method_names = Array.wrap(options[:methods]).map { |n| n if respond_to?(n) }.compact
+      Hash[(keys + method_names).map { |n| [n.to_s, send(n)] }]
+    end
+
   end
 end
-
