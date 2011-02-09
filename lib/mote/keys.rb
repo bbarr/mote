@@ -11,13 +11,13 @@ module Mote
         
         # Create a key for the model
         def self.key(name, opts={})
-          self.keys << name
+          self.keys[name.to_s] = Key.new(name, opts)
           Mote::Keys.generate_key_methods(name)
         end
 
         # Collection of keys for the model
         def self.keys
-          @keys ||= []
+          @keys ||= {}
         end
 
       end
@@ -44,13 +44,13 @@ module Mote
     # @param [Hash] hash Hash to process
     def process_keys(hash)
       doc_hash = Hash.new.tap do |doc|
-        hash.each do |k, v|
-          if self.class.keys.include? k.to_sym
-            doc[k.to_s] = hash.delete(k)
+        self.class.keys.each do |key_name, key|
+          if self.class.keys.include? key_name
+            doc[key.name] = hash.delete(key_name) || key.default
           end
         end
       end
-
+      
       hash.each do |k, v|
         instance_eval <<-"end_eval"
           instance_variable_set :@#{k}, v
@@ -58,6 +58,17 @@ module Mote
       end
       
       return doc_hash
+    end
+
+    # Class for keys created on a document allowing for default options etc
+    class Key
+
+      attr_reader :name, :default
+
+      def initialize(name, opts={})
+        @name = name.to_s
+        @default = opts[:default] || nil
+      end
     end
 
   end

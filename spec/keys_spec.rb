@@ -7,7 +7,7 @@ describe Mote::Keys do
 
     attr_accessor :password
 
-    key :name
+    key :name, :default => "Bill"
   end
 
   before do
@@ -46,6 +46,11 @@ describe Mote::Keys do
     @author = Author.create(:name => "Damian", :password => "pass")
     @a = Author.find_one(:name => "Damian")
     @a["name"].should == "Damian"
+  end
+
+  it "should set default attribute values if they exist and no value is provided" do
+    @author = Author.new
+    @author.name.should == "Bill"
   end
 
 end
