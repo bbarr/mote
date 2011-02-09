@@ -20,6 +20,13 @@ module Mote
           @keys ||= {}
         end
 
+        # Creates a method to retrieve the document's _id
+        class_eval do
+          def _id
+            @doc["_id"]
+          end
+        end
+        
       end
     end
 
@@ -50,6 +57,8 @@ module Mote
           end
         end
       end
+
+      doc_hash["_id"] = hash["_id"] if hash.include? "_id"
       
       hash.each do |k, v|
         instance_eval <<-"end_eval"
