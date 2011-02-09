@@ -7,4 +7,9 @@ class Book < Mote::Document
 
   def my_before_save
   end
+
+  def my_special_method
+    "foo:bar"
+  end
+
 end
