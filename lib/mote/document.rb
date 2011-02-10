@@ -145,11 +145,28 @@ module Mote
     # The basis for this method was borrowed from ActiveModel's Serialization#serializable_hash
     # @see ActiveSupport::Serialization#serialiazable_hash
     #
-    # Allows the user to specify methods on the model to call when
-    # serializing
+    # Allows the user to specify methods on the model to call when serializing
+    #
+    # == Note
+    # Only one of the 2 exclusion options (only or except) will be used, the 2 cannot be passed together
+    # If both are passed, only will take precedence
+    #
+    # @param [Hash] options Options to serialize with
+    # @option options [Symbol, Array <Symbol>] :only Specify specific attributes to include in serialization
+    # @option options [Symbol, Array <Symbol>] :except Specify methods to exclude during serialization
+    # @option options [Symbol, Array <Symbol>] :methods Model instance methods to call and include their result in serialization
     def serialize(options=nil)
       options ||= {}
       keys = @doc.keys
+
+      only   = Array.wrap(options[:only]).map(&:to_s)
+      except = Array.wrap(options[:except]).map(&:to_s)
+
+      if only.any?
+        keys &= only
+      elsif except.any?
+        keys -= except
+      end
 
       method_names = Array.wrap(options[:methods]).map { |n| n if respond_to?(n) }.compact
       Hash[(keys + method_names).map { |n| [n.to_s, send(n)] }]

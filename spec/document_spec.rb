@@ -43,6 +43,11 @@ describe Mote::Document do
   end
 
   describe "JSON custom methods" do
+
+    before do
+      @book = Book.new(:name => "War and Peace", :publisher => "Russkii Vestnik", :author => "Leo Tolstoy")
+    end
+
     it "should call my_special_method when rendering json" do
       @book.should_receive :my_special_method
       @book.as_json(:methods => [:my_special_method])
@@ -58,6 +63,25 @@ describe Mote::Document do
       json_hash = @book.as_json(:methods => [:my_special_method])
       json_hash.should include "my_special_method"
       json_hash["my_special_method"].should == "foo:bar"
+    end
+
+    it "should only fetch attributes specified in only" do
+      hash = @book.send :serialize, :only => :name
+      hash.should include "name"
+      hash.should_not include "publisher"
+      hash.should_not include "author"
+
+      hash = @book.send :serialize, :only => [:name, :author]
+      hash.should include "name"
+      hash.should include "author"
+      hash.should_not include "publisher"
+    end
+
+    it "should fetch all attribute except the ones specified" do
+      hash = @book.send :serialize, :except => :publisher
+      hash.should include "name"
+      hash.should include "author"
+      hash.should_not include "publisher"
     end
   end
   
