@@ -76,10 +76,10 @@ module Mote
 
       def initialize(name, opts={})
         @name = name.to_s
-        @default = opts[:default] || nil
+        @default = opts.include?(:default) ? opts[:default] : nil
       end
+
     end
 
   end
-
 end

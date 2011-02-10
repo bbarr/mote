@@ -8,6 +8,7 @@ describe Mote::Keys do
     attr_accessor :password
 
     key :name, :default => "Bill"
+    key :active, :default => false
   end
 
   before do
@@ -20,6 +21,10 @@ describe Mote::Keys do
 
   it "should have an _id method" do
     @author.should respond_to :_id
+  end
+
+  it "should allow for false boolean value for default" do
+    @author.active.should be false
   end
 
   describe "New Documents" do
