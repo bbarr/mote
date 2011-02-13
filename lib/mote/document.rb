@@ -57,12 +57,31 @@ module Mote
         return doc
       end
 
+      # Provides a means for checking if a Mote module was included into the model class
+      #
+      # @example 
+      #
+      #   class Book < Mote::Document
+      #     include Mote::Keys
+      #   end
+      #
+      #   Book.keys? #=> true
+      #   Book.callbacks? #=> false
+      def method_missing(method_id, *args, &block)
+        if Mote::MOTE_MODULES.collect { |m| m.to_s.downcase + "?" }.include? method_id.to_s
+          module_name = method_id.to_s.gsub(/\?/, '').capitalize
+          include? Mote.const_get(module_name)
+        else
+          super
+        end
+      end
+
     end
 
     attr_accessor :is_new 
 
     def initialize(doc_hash=Hash.new, is_new=true)
-      if keys?
+      if self.class.keys?
         self.doc = process_keys doc_hash.stringify_keys
       else
         self.doc = doc_hash.stringify_keys
@@ -133,14 +152,16 @@ module Mote
     end
 
     # Provide access to document keys through method missing
-    # Check whther a module is included in the model through methods such as
-    # keys? or callbacks?
+    # 
+    # @example
+    #   class Book < Mote::Document; end
+    #
+    #   @book = Book.new
+    #   @book["title"] = "War and Peace"
+    #   @book.title #=> "War and Peace"
     def method_missing(method_name, *args, &block)
       if @doc and @doc.include? method_name.to_s
         @doc[method_name.to_s]
-      elsif Mote::MOTE_MODULES.collect { |m| m.to_s.downcase + "?" }.include? method_name.to_s
-        module_name = method_name.to_s.gsub(/\?/, '').capitalize
-        self.class.include? Mote.const_get(module_name)
       else
         super
       end

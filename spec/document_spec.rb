@@ -43,8 +43,8 @@ describe Mote::Document do
   end
 
   it "should determine whether or not a module is included" do
-    @book.keys?.should be false
-    @book.callbacks?.should be true
+    Book.keys?.should be false
+    Book.callbacks?.should be true
   end
 
   describe "JSON custom methods" do
