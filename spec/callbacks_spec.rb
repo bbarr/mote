@@ -2,9 +2,6 @@ require File.expand_path("../spec_helper", __FILE__)
 
 describe Mote::Callbacks do
   
-  before do
-  end
-
   after do
     Book.collection.drop
   end
