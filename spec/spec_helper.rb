@@ -5,3 +5,7 @@ require "rubygems"
 require "bundler"
 
 Bundler.require(:default, :development)
+
+Rspec.configure do |config|
+  config.after(:each) { Book.collection.drop }
+end
