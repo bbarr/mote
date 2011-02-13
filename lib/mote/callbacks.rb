@@ -17,5 +17,9 @@ module Mote
       run_callbacks(:update) { super }
     end
 
+    def save
+      run_callbacks(:save) { super }
+    end
+
   end
 end
