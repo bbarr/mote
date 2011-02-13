@@ -16,6 +16,9 @@ Mote.autoload :Keys, "mote/keys"
 Mote.autoload :PkFactory, "mote/pk_factory"
 
 module Mote
+
+  MOTE_MODULES = [:Keys, :Callbacks]
+
   class << self
     def db
       @db
