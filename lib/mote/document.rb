@@ -62,7 +62,7 @@ module Mote
     attr_accessor :is_new 
 
     def initialize(doc_hash=Hash.new, is_new=true)
-      if self.class.include?(Mote::Keys)
+      if keys?
         self.doc = process_keys doc_hash.stringify_keys
       else
         self.doc = doc_hash.stringify_keys
@@ -111,12 +111,8 @@ module Mote
     def insert
       return false unless is_new?
     
-      run_callbacks! [:before_save, :before_insert] if callbacks?
-      
       _id = self.class.collection.insert(@doc)
       self.is_new = false
-
-      run_callbacks! [:after_save, :after_insert] if callbacks?
 
       return _id
     end
@@ -128,17 +124,19 @@ module Mote
     # @param [Hash] opts Options to send to the Mongo Driver along with the update
     def update(update_doc=@doc, opts)
       return false if is_new?
-
-      run_callbacks! [:before_save, :before_update]
       self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
-      run_callbacks! [:after_save, :after_update]
+    end
+
+    # Saves the current state of the document into the database
+    def save
+      is_new? ? insert : update
     end
 
     # Provide access to document keys through method missing
     # Check whther a module is included in the model through methods such as
     # keys? or callbacks?
     def method_missing(method_name, *args, &block)
-      if @doc.include? method_name.to_s
+      if @doc and @doc.include? method_name.to_s
         @doc[method_name.to_s]
       elsif Mote::MOTE_MODULES.collect { |m| m.to_s.downcase + "?" }.include? method_name.to_s
         module_name = method_name.to_s.gsub(/\?/, '').capitalize

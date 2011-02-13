@@ -89,5 +89,16 @@ describe Mote::Document do
       hash.should_not include "publisher"
     end
   end
+
+  it "should call insert when a save is called on a new document" do
+    @book.should_receive :insert
+    @book.save
+  end
+
+  it "should call update when save is called on a document which exists the db" do
+    @book.insert
+    @book.should_receive :update
+    @book.save
+  end
   
 end
