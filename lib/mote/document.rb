@@ -127,6 +127,8 @@ module Mote
     end
 
     # Makes an insert call to the database for the instance of the document
+    #
+    # @return [BSON::ObjectID] The id of the newly created object
     def insert
       return false unless is_new?
     
@@ -141,7 +143,7 @@ module Mote
     #
     # @param [<Mote::Document>] update_doc Optional document to update with
     # @param [Hash] opts Options to send to the Mongo Driver along with the update
-    def update(update_doc=@doc, opts)
+    def update(update_doc=@doc, opts={})
       return false if is_new?
       self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
     end
