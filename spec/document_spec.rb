@@ -6,10 +6,6 @@ describe Mote::Document do
     @book = Book.new(:name => "War and Peace")
   end
 
-  after do
-    Book.collection.drop
-  end
-
   it "should generate a collection name from the model name" do
     Book.collection_name.should == "books"
   end
