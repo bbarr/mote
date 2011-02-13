@@ -42,6 +42,11 @@ describe Mote::Document do
     @book.name.should == "War and Peace"
   end
 
+  it "should determine whether or not a module is included" do
+    @book.keys?.should be false
+    @book.callbacks?.should be true
+  end
+
   describe "JSON custom methods" do
 
     before do

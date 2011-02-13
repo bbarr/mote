@@ -10,7 +10,7 @@ module Mote
 
     included do
 
-      callbacks = [:before_save]
+      callbacks = [:before_insert, :after_insert, :before_update, :after_update, :before_save, :after_save]
 
       callbacks.each do |callback|
         class_eval <<-"end_eval"
@@ -36,6 +36,14 @@ module Mote
       callback_chain_method = "#{kind}_callback_chain"
       return unless self.class.respond_to?(callback_chain_method)
       self.class.send(callback_chain_method).run(self, options, &block)
+    end
+
+    def run_callbacks!(kind)
+      if kind.is_a? Array
+        kind.each { |cb_kind| run_callbacks(cb_kind) }
+      else
+        run_callbacks(kind)
+      end
     end
 
     # Custom array for holding onto a collection fo callbacks

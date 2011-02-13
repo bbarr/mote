@@ -10,14 +10,14 @@ describe Mote::Callbacks do
   end
 
   it "should add callback methods" do
-    Book.should respond_to :before_save
+    Book.should respond_to :before_insert
   end
 
-  it "should call my_before_save before save" do
-    Book.before_save :my_before_save
+  it "should call my_before_insert before save" do
+    Book.before_insert :my_before_insert
     @book = Book.new(:name => "War and Peace")
 
-    @book.should_receive :my_before_save
+    @book.should_receive :my_before_insert
     @book.insert
   end
 end
