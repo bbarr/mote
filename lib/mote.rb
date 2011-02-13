@@ -15,6 +15,9 @@ Mote.autoload :Callbacks, "mote/callbacks"
 Mote.autoload :Keys, "mote/keys"
 Mote.autoload :PkFactory, "mote/pk_factory"
 
+ActiveSupport.autoload :Concern, "active_support/concern"
+ActiveSupport.autoload :Callbacks, "active_support/callbacks"
+
 module Mote
 
   MOTE_MODULES = [:Keys, :Callbacks]
