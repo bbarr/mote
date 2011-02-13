@@ -14,6 +14,7 @@ require 'active_support/json'
 Mote.autoload :Callbacks, "mote/callbacks"
 Mote.autoload :Keys, "mote/keys"
 Mote.autoload :PkFactory, "mote/pk_factory"
+Mote.autoload :Timestamps, "mote/timestamps"
 
 ActiveSupport.autoload :Concern, "active_support/concern"
 ActiveSupport.autoload :Callbacks, "active_support/callbacks"
