@@ -1,0 +1,13 @@
+ruby_string="ruby-1.9.2"
+gemset_name="mote"
+
+if rvm list strings | grep -q "${ruby_string}" ; then
+
+  # Load or create the specified environment
+  if [[ -d "${rvm_path:-$HOME/.rvm}/environments" \
+    && -s "${rvm_path:-$HOME/.rvm}/environments/${ruby_string}@${gemset_name}" ]] ; then
+    \. "${rvm_path:-$HOME/.rvm}/environments/${ruby_string}@${gemset_name}"
+  else
+    rvm --create  "${ruby_string}@${gemset_name}"
+  fi
+fi
