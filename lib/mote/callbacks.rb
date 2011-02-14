@@ -13,13 +13,12 @@ module Mote
       run_callbacks(:insert) { super }
     end
 
-    def update
+    def update(doc_hash=@doc, opts={})
       run_callbacks(:update) { super }
     end
 
     def save
       run_callbacks(:save) { super }
     end
-
   end
 end
