@@ -9,7 +9,11 @@ with the database.
 
 ## Getting started
 ### Create a connection to the database
-`Mote.db = Mongo::Connection.new.db("my_db", :pk => Mote::PkFactory)`
+`
+
+Mote.db = Mongo::Connection.new.db("my_db", :pk => Mote::PkFactory)
+
+`
 
 Mote provides a custom PkFactory for use when generating IDs.  The PkFactory simply
 overwrites the way that the key is added to the document. Currently, the Ruby driver
@@ -18,7 +22,10 @@ quite differently from the rest of the operations done by the driver where keys 
 stored as strings instead of keys.
 
 ### Your first model
-`class Book < Mote::Document; end`
+`
+class Book < Mote::Document; end
+
+`
 
 That's it, your ready to use Mote's baseline convenience methods.
 
