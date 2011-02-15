@@ -1,11 +1,19 @@
+require "fast_stemmer"
+
 module Mote
 
   # Utility methods for building out a search on a document
   module SearchBuilder
+    extend self
 
-    def filter_words(word)
-      word.to_s
-        .downcase
+    def filter_words(str)
+      str
+        .split(' ')
+        .map(&:downcase)
+        .reject { |word| word.size < 2 }
+        .map { |word| strip_punctuation(word) }
+        .reject { |word| word.blank? }
+        .uniq
 
     end
 
