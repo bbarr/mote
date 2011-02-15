@@ -6,9 +6,9 @@ module Mote
   # @see Mote::Callbacks
   module Timestamps
     extend ActiveSupport::Concern
+    include Mote::Callbacks
 
     included do
-      include Mote::Callbacks
 
       # Auto generate keys for created_at and updated_at if the Mote::Keys
       # module has been included in the model
@@ -25,11 +25,15 @@ module Mote
       before_update :update_timestamps
     end
 
-    # Timestamp the query
-    def update_timestamps
-      time = Time.new
-      self.created_at = time if is_new?
-      self.updated_at = time
+    module InstanceMethods
+      
+      # Timestamp the query
+      def update_timestamps
+        time = Time.new
+        self.created_at = time if is_new?
+        self.updated_at = time
+      end
+
     end
 
   end
