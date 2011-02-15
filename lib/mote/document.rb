@@ -81,13 +81,16 @@ module Mote
     attr_accessor :is_new 
 
     def initialize(doc_hash=Hash.new, is_new=true)
-      if self.class.keys?
-        self.doc = process_keys doc_hash.stringify_keys
-      else
-        self.doc = doc_hash.stringify_keys
-      end
-
+      instantiate_document doc_hash
       self.is_new = is_new
+    end
+
+    # Method to instantiate the document hash. Override this method
+    # if you wish to instantiate the document differently
+    #
+    # @param [Hash] hash Hash which defines the document
+    def instantiate_document(hash)
+      self.doc = hash.stringify_keys
     end
 
     def doc=(hash)
