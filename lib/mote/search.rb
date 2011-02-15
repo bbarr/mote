@@ -30,6 +30,21 @@ module Mote
         @search_keys
       end
 
+      # Performs a find based on the search query provided
+      #
+      # @param [String] query The query to search on
+      def search(query)
+        find(search_hash(query))
+      end
+
+      # Build out a hash to use in querying a MongoDB Document
+      # 
+      # @param [String] query The query to search on
+      def search_hash(query)
+        { :search_terms => { "$all" => SearchBuilder.stem_words(query) }}
+      end
+
+
     end
 
     module InstanceMethods

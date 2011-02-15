@@ -17,4 +17,10 @@ describe Mote::Cursor do
     end
   end
 
+  it "should proxy any undefined methods to the Mongo::Cursor object" do
+    books = Book.all
+    books.should be_a Mote::Cursor
+    books.count.should == 5
+  end
+
 end
