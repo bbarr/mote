@@ -20,7 +20,12 @@ describe Mote::Cursor do
   it "should proxy any undefined methods to the Mongo::Cursor object" do
     books = Book.all
     books.should be_a Mote::Cursor
-    books.count.should == 5
+    books.skip(1)
+  end
+
+  it "should respond to Mongo::Cursor methods" do
+    books = Book.all
+    books.should respond_to :skip
   end
 
 end

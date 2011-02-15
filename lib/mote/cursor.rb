@@ -26,5 +26,25 @@ module Mote
       end
     end
 
+    # Proxy any missing methods that the Mongo::Cursor can handle back to the
+    # Mongo::Cursor itself if possible
+    def method_missing(method_id, *args, &block)
+      if @mongo_cursor.respond_to? method_id
+        @mongo_cursor.send method_id
+      else
+        super
+      end
+    end
+
+    # Let everyone know that the Mote::Cursor will accept method calls
+    # to any native Mongo::Cursor method calls
+    def respond_to?(method_id)
+      if @mongo_cursor.respond_to? method_id
+        true
+      else
+        super
+      end
+    end
+
   end
 end
