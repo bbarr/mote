@@ -2,7 +2,6 @@ module Mote
 
   # Wrap a Mongo::Cursor for managinag results as Mote::Documents
   class Cursor
-    include Enumerable
     
     def initialize(obj_class, mongo_cursor)
       @obj_class = obj_class
@@ -12,16 +11,14 @@ module Mote
     # Loop through each cursor entry and create a Mote::Document for
     # each document found in the cursor
     def each
-      @mongo_cursor.each do |doc|
-        yield(@obj_class.new(doc, false))
-      end
+      @mongo_cursor.each { |doc| yield(@obj_class.new(doc, false)) }
     end
 
     # Creates an array of Mote::Documents for the entire cursor
     #
     # @return [Array <Mote::Document>] Array of Mote::Documents for each entry found
     def to_a
-      self.map
+      @mongo_cursor.map { |doc| @obj_class.new(doc, false) }
     end
 
     # Proxy any missing methods that the Mongo::Cursor can handle back to the Mongo::Cursor

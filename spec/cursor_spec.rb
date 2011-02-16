@@ -42,8 +42,14 @@ describe Mote::Cursor do
   end
 
   it "should return the result of the Mongo::Cursor method if it does not return a cursor" do
-    books=  Book.find
+    books = Book.find
     books.close.should be true
+  end
+
+  it "should return the count from the Mongo::Cursor instance" do
+    books = Book.find
+    books.should_receive :method_missing
+    books.count
   end
   
 end
