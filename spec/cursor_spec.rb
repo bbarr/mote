@@ -28,4 +28,22 @@ describe Mote::Cursor do
     books.should respond_to :skip
   end
 
+  it "should update the mongo_cursor with the return of a Mongo::Cursor proxied method" do
+    books = Book.find
+    original_cursor = books.instance_variable_get("@mongo_cursor").dup
+
+    books.skip(1)
+    original_cursor.should_not be books.instance_variable_get("@mongo_cursor")
+  end
+
+  it "should return the Mote::Cursor instance when Mongo::Cursor methods return the cursor" do
+    books = Book.find().skip(1)
+    books.should be_a Mote::Cursor
+  end
+
+  it "should return the result of the Mongo::Cursor method if it does not return a cursor" do
+    books=  Book.find
+    books.close.should be true
+  end
+  
 end

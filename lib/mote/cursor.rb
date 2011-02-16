@@ -21,16 +21,22 @@ module Mote
     #
     # @return [Array <Mote::Document>] Array of Mote::Documents for each entry found
     def to_a
-      document_array = [].tap do |arr|
-        self.each { |doc| arr << doc }
-      end
+      self.map
     end
 
-    # Proxy any missing methods that the Mongo::Cursor can handle back to the
-    # Mongo::Cursor itself if possible
+    # Proxy any missing methods that the Mongo::Cursor can handle back to the Mongo::Cursor
+    # itself if possible. Any Mongo::Cursor methods which return the cursor instance will
+    # in turn return the Mote::Cursor instance
+    #
+    # Any methods which return another kind of value, will return that directly
     def method_missing(method_id, *args, &block)
       if @mongo_cursor.respond_to? method_id
-        @mongo_cursor.send method_id
+        result = @mongo_cursor.send(method_id, *args, &block)
+        if result.is_a? Mongo::Cursor
+          self
+        else
+          result
+        end
       else
         super
       end
