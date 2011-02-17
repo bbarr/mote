@@ -43,8 +43,8 @@ module Mote
       end
 
       # Find all of the documents in a collection
-      def all
-        find
+      def all(options=nil)
+        find options
       end
 
       # Quickly create a document, inserting it to the collection immediately
