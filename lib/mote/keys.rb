@@ -63,9 +63,7 @@ module Mote
         doc_hash["_id"] = hash["_id"] if hash.include? "_id"
         
         hash.each do |k, v|
-          instance_eval <<-"end_eval"
-            instance_variable_set :@#{k}, v
-          end_eval
+          instance_eval { instance_variable_set "@#{k}", v }
         end
         
         return doc_hash
