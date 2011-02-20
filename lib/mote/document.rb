@@ -135,7 +135,8 @@ module Mote
     def insert
       return false unless is_new?
     
-      _id = self.class.collection.insert(@doc)
+      _id = self.class.collection.insert prepare_for_insert
+      @doc["_id"] = _id
       self.is_new = false
 
       return _id
@@ -148,6 +149,7 @@ module Mote
     # @param [Hash] opts Options to send to the Mongo Driver along with the update
     def update(update_doc=@doc, opts={})
       return false if is_new?
+      update_doc = prepare_for_insert update_doc
       self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
     end
 
@@ -173,6 +175,14 @@ module Mote
     end
 
     private
+
+    # Takes a document and ensure's that it is ready for insertion or update into the
+    # collection. Override this method to alter the document before saving into the database
+    #
+    # @return [Hash] Hash to insert / update in the database with
+    def prepare_for_insert(doc=@doc)
+      doc
+    end
 
     # Serialize a Mote::Document
     #
