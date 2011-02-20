@@ -7,7 +7,7 @@ module Mote
   # @param [Hash] doc Document being inserted into database
   module PkFactory
     def self.create_pk(doc)
-      doc.has_key?(:_id) || doc.has_key?('_id') ? doc : doc.merge!("_id" => BSON::ObjectId.new)
+      (doc.has_key?(:_id) && !doc[:_id].nil?) || (doc.has_key?('_id') && !doc["_id"].nil?) ? doc : doc.merge!("_id" => BSON::ObjectId.new)
     end
   end
 end
