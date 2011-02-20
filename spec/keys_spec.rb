@@ -9,6 +9,7 @@ describe Mote::Keys do
 
     key :name, :default => "Bill"
     key :active, :default => false
+    key :position
   end
 
   before do
@@ -76,6 +77,12 @@ describe Mote::Keys do
       @a = Author.find_one(:name => @author.name)
       @a["_id"].should be_a BSON::ObjectId
     end
+  end
+
+  it "should not store nil keys in the database" do
+    @author.insert
+    raw_author = Author.collection.find_one(@author._id)
+    raw_author.should_not include "position"
   end
 
 end
