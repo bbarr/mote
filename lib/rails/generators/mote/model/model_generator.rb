@@ -1,7 +1,7 @@
 module Mote
   module Generators
     
-    class ModelGenerator
+    class ModelGenerator < ::Rails::Generators::NamedBase
       desc "Creates a Mote Model"
 
       def create_model_file
