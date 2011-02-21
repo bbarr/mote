@@ -16,6 +16,7 @@ Mote.autoload :Keys, "mote/keys"
 Mote.autoload :PkFactory, "mote/pk_factory"
 Mote.autoload :Timestamps, "mote/timestamps"
 Mote.autoload :Search, "mote/search"
+Mote.autoload :EmbeddedDocuments, "mote/embedded_documents"
 
 ActiveSupport.autoload :Concern, "active_support/concern"
 ActiveSupport.autoload :Callbacks, "active_support/callbacks"

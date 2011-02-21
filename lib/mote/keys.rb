@@ -1,5 +1,7 @@
 module Mote
   
+  # Module for defining specific keys which are allowed in a document.  Any properties
+  # found in has for a given Mote::Document will be relegated to instance variables
   module Keys
     extend ActiveSupport::Concern
 
@@ -9,6 +11,10 @@ module Mote
 
     module ClassMethods
       
+      # Class macro for defining a key on a Mote::Document
+      #
+      # @param [Symbol] name The name of the key
+      # @param [Hash] opts Options to go along with the key definition
       def key(name, opts={})
         self.keys[name.to_s] = Key.new(name, opts)
         generate_key_methods(name)
@@ -17,7 +23,7 @@ module Mote
       def keys
         @keys ||= {}
       end
-      
+
       # Generates accessors and setters for a key on the model
       #
       # @param [String, Symbol] key_name The key name to generate methods for
@@ -52,6 +58,8 @@ module Mote
       # drop any keys in the hash that have a nil value to prevent nil keys from being
       # inserted into the database
       def prepare_for_insert(doc=@doc)
+        super
+
         clean_doc = doc.dup
         self.class.keys.each { |key_name, key| clean_doc.delete(key_name) if clean_doc[key_name].nil? }
         clean_doc
@@ -70,8 +78,6 @@ module Mote
           end
         end
 
-        doc_hash["_id"] = hash["_id"] if hash.include? "_id"
-        
         hash.each do |k, v|
           instance_eval { instance_variable_set "@#{k}", v }
         end
