@@ -134,7 +134,8 @@ module Mote
     # @return [BSON::ObjectID] The id of the newly created object
     def insert
       return false unless is_new?
-      #_id = self.class.collection.insert prepare_for_insert
+
+      _id = self.class.collection.insert prepare_for_insert
       @doc["_id"] = _id
       self.is_new = false
 
