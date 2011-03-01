@@ -52,8 +52,6 @@ module Mote
         self.class.collection.pk_factory.create_pk(self.doc)
       end
 
-      private
-
       # Overwrite the original prepare_for_insert method so that we can run through and
       # drop any keys in the hash that have a nil value to prevent nil keys from being
       # inserted into the database
@@ -64,6 +62,8 @@ module Mote
         self.class.keys.each { |key_name, key| clean_doc.delete(key_name) if clean_doc[key_name].nil? }
         clean_doc
       end
+
+      private
 
       # Creates a hash of the keys the model has define and attemps to
       # create instance variables for any other left over hash key value pairs
