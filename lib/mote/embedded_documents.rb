@@ -46,7 +46,7 @@ module Mote
           arr = self.send(emb)
           unless arr.nil?
             model = embedded_collection_class(emb)
-            doc.map! { |doc| model.prepare_for_insert }
+            arr.map! { |doc| model.prepare_for_insert }
           end
         end
 
