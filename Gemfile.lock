@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mote (0.2.9)
+    mote (0.3.14)
       activemodel (~> 3.0.0)
       activesupport (~> 3.0.0)
       bson_ext (>= 1.2)
@@ -20,8 +20,8 @@ GEM
       i18n (~> 0.4.1)
     activesupport (3.0.0)
     arrayfields (4.7.4)
-    bson (1.2.2)
-    bson_ext (1.2.2)
+    bson (1.2.4)
+    bson_ext (1.2.4)
     builder (2.1.2)
     chronic (0.2.3)
       hoe (>= 1.2.1)
@@ -67,8 +67,8 @@ GEM
     metrical (0.0.4)
       activesupport
       metric_fu (~> 2.0.1)
-    mongo (1.2.2)
-      bson (>= 1.2.2)
+    mongo (1.2.4)
+      bson (>= 1.2.4)
     rails_best_practices (0.7.0)
       activesupport
       colored (~> 1.2)
