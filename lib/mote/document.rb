@@ -174,8 +174,6 @@ module Mote
       end
     end
 
-    private
-
     # Takes a document and ensure's that it is ready for insertion or update into the
     # collection. Override this method to alter the document before saving into the database
     #
@@ -183,6 +181,8 @@ module Mote
     def prepare_for_insert(doc=@doc)
       doc
     end
+
+    private
 
     # Serialize a Mote::Document
     #
