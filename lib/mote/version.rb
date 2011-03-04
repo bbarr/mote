@@ -1,3 +1,3 @@
 module Mote
-  VERSION = "0.3.31"
+  VERSION = "0.3.4"
 end
