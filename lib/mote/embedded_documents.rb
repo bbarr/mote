@@ -39,7 +39,7 @@ module Mote
       end
 
       # Update prepare for insert to handle any embbedded documents in this model
-      def prepare_for_insert
+      def prepare_for_insert(doc=@doc)
         doc = super
         
         self.class.embedded_docs.each do |emb|
