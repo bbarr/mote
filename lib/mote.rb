@@ -36,5 +36,9 @@ module Mote
       end
       @db = mongo_db
     end
+
+    def configure
+      yield self
+    end
   end
 end
