@@ -8,6 +8,7 @@ describe Mote::EmbeddedDocuments do
 
     key :title
     embeds_many :posts
+    embeds_one :author
   end
 
   class Post < Mote::Document
@@ -17,6 +18,11 @@ describe Mote::EmbeddedDocuments do
     key :content
   end
 
+  class Author < Mote::Document
+    include Mote::Keys
+
+    key :name
+  end
 
   describe "Parent (Blog)" do
 
@@ -32,8 +38,12 @@ describe Mote::EmbeddedDocuments do
       Blog.should respond_to :embedded_docs
     end
 
+    it "should have a class macro for embedding a single doc" do
+      Blog.should respond_to :embeds_one
+    end
+
     it "should include posts in the embedded_docs" do
-      Blog.embedded_docs.should include :posts
+      Blog.embedded_docs.should include({ :name => :posts, :kind => :many })
     end
 
     it "should create instances of Post for each post embedded" do
@@ -46,6 +56,13 @@ describe Mote::EmbeddedDocuments do
       @blog = Blog.create(:title => "My blog", :posts => [ { :title => "post one", :content => "klakda"}, {:title => "post two", :content => "lskldk" }])
     end
 
+    it "should should create an instance of Author for the post author" do
+      @blog = Blog.new(:title => "My blog", :author => { name: "Damian" })
+      @blog.author.should be_a Author
+      @blog.insert
+    end
+
   end
   
 end
+
