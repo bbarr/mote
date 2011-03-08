@@ -12,6 +12,7 @@ describe Mote::Document do
 
   it "should insert a new document" do
     @book.insert.should be_a(BSON::ObjectId)
+    Book.all.count.should be 1
   end
   
   it "should reject insert on not new" do
