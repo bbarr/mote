@@ -63,6 +63,17 @@ describe Mote::EmbeddedDocuments do
     end
 
   end
+
+  describe "embeds_many (Posts)" do
+
+    before do
+      @blog = Blog.new(:title => "My blog", :posts => [ { :title => "post one", :content => "klakda"}, {:title => "post two", :content => "lskldk" }])
+    end
+
+    specify "valid hash for insert into parent" do
+      @blog.prepare_for_insert.should be_a Hash
+    end
+  end
   
 end
 
