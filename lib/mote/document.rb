@@ -56,7 +56,26 @@ module Mote
 
         return doc
       end
+      
+      # Remove a document based on the query provided from the model's collection
+      #
+      # @param [BSON::ObjectId, Hash] query The query to find the document(s) to remove
+      # @param [Hash] opts Optional hash of options to send to the Mongo driver
+      #
+      # @see Mongo::Collection#remove
+      def remove(query, opts={})
+        query = object_id_query(query) if query.is_a? BSON::ObjectId
+        collection.remove(query, opts)
+      end
 
+      # Remove a document from the model's collection based on the query provided
+      # When given an BSON::ObjectId, a query will be generated for the ObjectId to remove
+      # a specific document
+      #
+      # @example 
+      #   Book.remove(BSON::ObjectId("4d76497204af5c0a81000001")) 
+      #   
+      #
       # Provides a means for checking if a Mote module was included into the model class
       #
       # @example 
@@ -74,6 +93,20 @@ module Mote
         else
           super
         end
+      end
+
+      private
+
+      # Generates a simple hash query to query a document by its _id property when
+      # given a BSON::ObjectId
+      #
+      # @example object_id_query(BSON::ObjectId("4d76497204af5c0a81000001"))
+      #  { _id: BSON::ObjectId(BSON::ObjectId("4d76497204af5c0a81000001")) }
+      #
+      # @param BSON::ObjectId
+      # @return Hash
+      def object_id_query(object_id)
+        { _id: object_id }
       end
 
     end

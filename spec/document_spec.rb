@@ -97,5 +97,16 @@ describe Mote::Document do
     @book.should_receive :update
     @book.save
   end
+
+  it "should generate a hash to query by when given an ObjectId" do
+    object_id = BSON::ObjectId("4d76497204af5c0a81000001")
+    Book.send(:object_id_query, object_id).should == { _id: object_id } 
+  end
+
+  it "should remove a document from the model's collection" do
+    @book.insert
+    Book.remove(@book["_id"])
+    Book.all.count.should be 0
+  end
   
 end
