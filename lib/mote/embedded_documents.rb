@@ -37,13 +37,16 @@ module Mote
 
     module InstanceMethods
 
+      # Typecasts any embedded docs as their model
+      #
+      # @see Mote::Document#instantiate_document
       def instantiate_document(hash)
         super
 
         embedded_docs.each do |emb|
           embedded = self.send(emb[:name])
-          unless embedded.nil?
 
+          unless embedded.nil?
             model = embedded_collection_class(emb[:name])
 
             if emb[:kind] == :many
@@ -57,7 +60,10 @@ module Mote
 
       end
 
-      # Update prepare for insert to handle any embbedded documents in this model
+      # Call prepare for insert on any embedded models so they are ready to insert
+      # into the database through the parent doc
+      # 
+      # @see Mote::Document#prepare_for_insert
       def prepare_for_insert(doc=@doc)
         doc = super
         
@@ -65,10 +71,12 @@ module Mote
           embedded = self.send(emb[:name])
 
           unless embedded.nil?
+            hash_key = emb[:name].to_s
+
             if emb[:kind] == :many
-              doc[emb[:name].to_s].map! { |emb_doc| emb_doc.prepare_for_insert }
+              doc[hash_key].map! { |emb_doc| emb_doc.prepare_for_insert }
             else
-              doc[emb[:name].to_s] = doc[emb[:name].to_s].prepare_for_insert
+              doc[hash_key] = doc[hash_key].prepare_for_insert
             end
           end
         end
