@@ -166,8 +166,12 @@ module Mote
     #
     # @return [BSON::ObjectID] The id of the newly created object
     def insert
-      return false unless is_new?
 
+      return false unless is_new?
+      
+      validate
+      return false unless valid?
+      
       _id = self.class.collection.insert prepare_for_insert
       @doc["_id"] = _id
       self.is_new = false
@@ -181,7 +185,12 @@ module Mote
     # @param [<Mote::Document>] update_doc Optional document to update with
     # @param [Hash] opts Options to send to the Mongo Driver along with the update
     def update(update_doc=@doc, opts={})
+
       return false if is_new?
+      
+      validate
+      return false unless valid?
+      
       update_doc = prepare_for_insert update_doc
       self.class.collection.update({"_id" => @doc["_id"]}, update_doc, opts)
     end
@@ -213,6 +222,25 @@ module Mote
     # @return [Hash] Hash to insert / update in the database with
     def prepare_for_insert(doc=@doc)
       doc
+    end
+    
+    # Stores errors from validations, or anything that should prevent changing the DB
+    def errors
+      @errors ||= {}
+    end
+    
+    # Override this in your model to conditionally add errors to @errors hash
+    # example:
+    # errors['name'] = 'Name must not be blank' if 
+    #
+    #
+    #
+    def validate
+      true
+    end
+    
+    def valid?
+      errors.empty?
     end
 
     private
