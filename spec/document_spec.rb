@@ -25,6 +25,12 @@ describe Mote::Document do
     @book.insert.should be(false)
   end
   
+  it "should hold errors in error hash" do
+    @book = Book.new
+    @book.validate
+    @book.errors['name'].should == 'Requires title'
+  end
+  
   it "should reject update on invalid object" do
     @book.insert
     @book[:name] = nil
