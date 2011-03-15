@@ -50,10 +50,10 @@ module Mote
       # Quickly create a document, inserting it to the collection immediately
       # 
       # @param [Hash] doc_hash Hash which represents the document to be inserted
-      def create(doc_hash)
+      def create(doc_hash={})
         doc = self.new(doc_hash, true)
-        doc.insert
-
+        return false if doc.insert == false
+        
         return doc
       end
       
@@ -230,15 +230,16 @@ module Mote
     end
     
     # Override this in your model to conditionally add errors to @errors hash
-    # example:
-    # errors['name'] = 'Name must not be blank' if 
     #
-    #
-    #
+    # @example
+    #   def validate
+    #     errors['name'] = 'Must have name' if self['name'].nil?
+    #   end
     def validate
       true
     end
     
+    # Are there errors?
     def valid?
       errors.empty?
     end

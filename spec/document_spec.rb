@@ -14,10 +14,25 @@ describe Mote::Document do
     @book.insert.should be_a(BSON::ObjectId)
     Book.all.count.should be 1
   end
-  
+    
   it "should reject insert on not new" do
     @book.insert
     @book.insert.should be(false)
+  end
+  
+  it "should reject insert on invalid object" do
+    @book = Book.new
+    @book.insert.should be(false)
+  end
+  
+  it "should reject update on invalid object" do
+    @book.insert
+    @book[:name] = nil
+    @book.update.should be(false)
+  end
+  
+  it "should reject create on invalid params" do
+    Book.create.should be(false)
   end
 
   it "should find one by id" do

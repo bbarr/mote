@@ -9,5 +9,9 @@ class Book < Mote::Document
   def my_special_method
     "foo:bar"
   end
+  
+  def validate
+    errors['name'] = 'Requires title' if self['name'].nil?
+  end
 
 end
