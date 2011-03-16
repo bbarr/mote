@@ -9,6 +9,7 @@ describe Mote::Keys do
 
     key :name, :default => "Bill"
     key :active, :default => false
+    key :coll, :default => []
     key :position
   end
 
@@ -26,6 +27,15 @@ describe Mote::Keys do
 
   it "should allow for false boolean value for default" do
     @author.active.should be false
+  end
+
+  it "should not use a reference to a default" do
+    @author.coll << 1
+
+    author_two = Author.new(:name => "Bob")
+    author_two.coll.should be_a Array
+
+    author_two.coll.size.should be 0
   end
 
   describe "New Documents" do
