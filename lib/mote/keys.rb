@@ -72,9 +72,7 @@ module Mote
       def process_keys(hash)
         doc_hash = Hash.new.tap do |doc|
           self.class.keys.each do |key_name, key|
-            if self.class.keys.include? key_name
-              doc[key.name] = hash.delete(key_name) || key.default
-            end
+            doc[key.name] = hash.delete(key_name) || key.default
           end
         end
 
