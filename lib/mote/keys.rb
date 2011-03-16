@@ -72,7 +72,7 @@ module Mote
       def process_keys(hash)
         doc_hash = Hash.new.tap do |doc|
           self.class.keys.each do |key_name, key|
-            doc[key.name] = hash.delete(key_name) || key.default
+            doc[key.name] = hash.delete(key_name) || key.get_default
           end
         end
 
@@ -93,6 +93,14 @@ module Mote
       def initialize(name, opts={})
         @name = name.to_s
         @default = opts.include?(:default) ? opts[:default] : nil
+      end
+
+      def get_default
+        begin
+          @default.dup
+        rescue TypeError
+          @default
+        end
       end
 
     end
