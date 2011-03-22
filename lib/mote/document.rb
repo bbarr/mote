@@ -52,7 +52,7 @@ module Mote
       # @param [Hash] doc_hash Hash which represents the document to be inserted
       def create(doc_hash={})
         doc = self.new(doc_hash, true)
-        return false if doc.save == false
+        return false if doc.insert == false
         
         return doc
       end
